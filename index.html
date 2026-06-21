@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVC HackFusion 2.0 | Inter-College Hackathon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Fallback while React loads -->
+    <div id="root">
+        <div class="loading-fallback">⚡ Loading hackathon details...</div>
+    </div>
+    <noscript>
+        <div style="color:white; text-align:center; padding:50px;">
+            Please enable JavaScript to view the hackathon website.
+        </div>
+    </noscript>
+
+    <!-- Cloudflare CDN for React 18 and Babel (more reliable) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ── Navbar Component ──
+        function Navbar() {
+            const [scrolled, setScrolled] = useState(false);
+            const [menuOpen, setMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 40);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const closeMenu = () => setMenuOpen(false);
+
+            return (
+                <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+                    <div className="nav-logo">
+                        &lt;<span>AVC</span>HackFusion /&gt;
+                    </div>
+                    <button
+                        className="mobile-toggle"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        {menuOpen ? '✕' : '☰'}
+                    </button>
+                    <ul className={`nav-links ${menuOpen ? 'expanded' : 'collapsed'}`}>
+                        <li><a href="#about" onClick={closeMenu}>About</a></li>
+                        <li><a href="#rules" onClick={closeMenu}>Rules</a></li>
+                        <li><a href="#prizes" onClick={closeMenu}>Prizes</a></li>
+                        <li><a href="#timeline" onClick={closeMenu}>Schedule</a></li>
+                        <li><a href="#cta" className="nav-cta" onClick={closeMenu}>Register Now</a></li>
+                    </ul>
+                </nav>
+            );
+        }
+
+        // ── Hero Section ──
+        function Hero() {
+            return (
+                <section className="hero glass-card-strong" id="hero">
+                    <div className="hero-badge">🚀 Inter-College Hackathon</div>
+                    <h1>
+                        Welcome to <br />
+                        <span className="gradient-text">AVC HackFusion 2.0</span>
+                    </h1>
+                    <p className="hero-subtitle">
+                        Build. Innovate. Compete. — Inside the prestigious <strong>AVC Institute</strong> premise.
+                    </p>
+                    <p className="hero-date">📅 July 15 – 16, 2026 &nbsp;|&nbsp; ⏰ 48 Hours of Pure Coding</p>
+                    <div className="hero-buttons">
+                        <a href="#cta" className="btn btn-primary">🔗 Register Your Team</a>
+                        <a href="#rules" className="btn btn-outline">📋 View Rules</a>
+                    </div>
+                    <div className="hero-stats">
+                        <div className="hero-stat">
+                            <div className="stat-num">48</div>
+                            <div className="stat-label">Hours</div>
+                        </div>
+                        <div className="hero-stat">
+                            <div className="stat-num">2</div>
+                            <div className="stat-label">Days</div>
+                        </div>
+                        <div className="hero-stat">
+                            <div className="stat-num">₹0</div>
+                            <div className="stat-label">Entry Fee</div>
+                        </div>
+                        <div className="hero-stat">
+                            <div className="stat-num">All</div>
+                            <div className="stat-label">Colleges Welcome</div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ── About Section ──
+        function About() {
+            return (
+                <section className="section" id="about">
+                    <h2 className="section-title">
+                        About the <span className="accent">Hackathon</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        A 2-day innovation sprint hosted at AVC Institute — where creativity meets code.
+                    </p>
+                    <div className="about-grid">
+                        <div className="glass-card about-card">
+                            <h3>🏛️ Hosted at AVC Institute</h3>
+                            <p>
+                                AVC Institute proudly opens its doors for an electrifying inter-college hackathon.
+                                With state-of-the-art labs, high-speed Wi-Fi, and a vibrant campus atmosphere,
+                                this is the perfect battleground for your coding prowess.
+                            </p>
+                            <span className="about-highlight">📍 On-Premise Event — Be There in Person!</span>
+                        </div>
+                        <div className="glass-card about-card">
+                            <h3>💡 Why Participate?</h3>
+                            <p>
+                                Network with like-minded peers, showcase your skills, learn from mentors,
+                                and walk away with amazing freebies, certificates, and lifelong memories.
+                                No entry fee — just pure passion for technology!
+                            </p>
+                            <span className="about-highlight">🎯 Open to ALL college students</span>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ── Rules Section ──
+        function Rules() {
+            const rulesList = [
+                {
+                    icon: '👥',
+                    title: 'Team Size',
+                    desc: 'Teams of 2 to 4 members. All members must be from a recognized college/university.',
+                    highlight: false,
+                },
+                {
+                    icon: '⏰',
+                    title: 'Duration',
+                    desc: 'This is a 2-day hackathon. Teams must be present on both days — July 15 & 16, 2026.',
+                    highlight: false,
+                },
+                {
+                    icon: '🚫',
+                    title: 'No AI Tools Allowed',
+                    desc: 'The use of ANY AI tools (ChatGPT, Copilot, CodeWhisperer, etc.) is STRICTLY PROHIBITED. All code must be written by participants. Violation leads to immediate disqualification.',
+                    highlight: true,
+                },
+                {
+                    icon: '📜',
+                    title: 'Original Work',
+                    desc: 'All projects must be built from scratch during the hackathon. Pre-built projects or plagiarism will result in disqualification.',
+                    highlight: false,
+                },
+                {
+                    icon: '🎤',
+                    title: 'Final Presentation',
+                    desc: 'Each team must present a working demo/prototype to the judging panel. Presentations are mandatory for evaluation.',
+                    highlight: false,
+                },
+                {
+                    icon: '🤝',
+                    title: 'Code of Conduct',
+                    desc: 'Maintain professionalism and respect. Any form of misconduct will lead to removal from the event.',
+                    highlight: false,
+                },
+            ];
+
+            return (
+                <section className="section" id="rules">
+                    <h2 className="section-title">
+                        Rules & <span className="accent">Guidelines</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        Read carefully — adherence to these rules is mandatory for all participants.
+                    </p>
+                    <div className="rules-grid">
+                        {rulesList.map((rule, idx) => (
+                            <div
+                                key={idx}
+                                className={`glass-card rule-card ${rule.highlight ? 'no-ai' : ''}`}
+                            >
+                                <span className="rule-icon">{rule.icon}</span>
+                                <h4>{rule.title}</h4>
+                                <p>{rule.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+
+        // ── Prizes Section ──
+        function Prizes() {
+            return (
+                <section className="section" id="prizes">
+                    <h2 className="section-title">
+                        Prizes & <span className="accent">Rewards</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        Winners take home exclusive freebies. EVERY participant gets certified!
+                    </p>
+                    <div className="prizes-showcase">
+                        <div className="glass-card prize-item winner-highlight">
+                            <span className="prize-emoji">🎒</span>
+                            <h4>Exclusive Bag</h4>
+                            <p>Branded AVC HackFusion backpack for the winning team</p>
+                        </div>
+                        <div className="glass-card prize-item winner-highlight">
+                            <span className="prize-emoji">🧢</span>
+                            <h4>Stylish Caps</h4>
+                            <p>Limited edition hackathon cap for each winner</p>
+                        </div>
+                        <div className="glass-card prize-item winner-highlight">
+                            <span className="prize-emoji">💧</span>
+                            <h4>Water Bottles</h4>
+                            <p>Premium insulated water bottle for the champions</p>
+                        </div>
+                        <div className="glass-card prize-item">
+                            <span className="prize-emoji">📜</span>
+                            <h4>Participation Certificate</h4>
+                            <p>Official AVC Institute certificate for ALL participants</p>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ── Timeline Section ──
+        function Timeline() {
+            return (
+                <section className="section" id="timeline">
+                    <h2 className="section-title">
+                        2-Day <span className="accent">Schedule</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        A packed 48-hour journey of coding, learning, and fun at AVC Institute.
+                    </p>
+                    <div className="timeline">
+                        <div className="glass-card timeline-card">
+                            <div className="day-badge">📅 DAY 1 — July 15</div>
+                            <h4>Kickoff & Build</h4>
+                            <ul>
+                                <li>9:00 AM — Registration & Check-in</li>
+                                <li>10:00 AM — Opening Ceremony</li>
+                                <li>11:00 AM — Hackathon Begins!</li>
+                                <li>1:00 PM — Lunch Break</li>
+                                <li>6:00 PM — Mentor Round 1</li>
+                                <li>9:00 PM — Dinner & Networking</li>
+                                <li>Overnight coding continues...</li>
+                            </ul>
+                        </div>
+                        <div className="glass-card timeline-card">
+                            <div className="day-badge">📅 DAY 2 — July 16</div>
+                            <h4>Polish & Present</h4>
+                            <ul>
+                                <li>8:00 AM — Breakfast</li>
+                                <li>12:00 PM — Submission Deadline</li>
+                                <li>1:00 PM — Lunch</li>
+                                <li>2:00 PM — Final Presentations</li>
+                                <li>5:00 PM — Judging & Deliberation</li>
+                                <li>6:30 PM — Award Ceremony</li>
+                                <li>7:00 PM — Closing & Certificates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // ── CTA Section ──
+        function CTA() {
+            return (
+                <section className="cta-section glass-card-strong" id="cta">
+                    <h2>🔥 Ready to Compete?</h2>
+                    <p>
+                        Gather your team, bring your A-game, and join us at <strong>AVC Institute</strong> for an
+                        unforgettable 2-day hackathon experience. Registration is completely FREE!
+                    </p>
+                    <a href="#" className="btn btn-primary" onClick={(e) => {
+                        e.preventDefault();
+                        alert('🎉 Registration form will open soon! Stay tuned to the AVC Institute notice board.\n\nFor queries, contact the Hackathon Committee at AVC Institute.');
+                    }}>
+                        🚀 Register Now — It's Free!
+                    </a>
+                    <p style={{ color: '#9a8ab8', marginTop: '14px', fontSize: '0.85rem' }}>
+                        📍 AVC Institute Premise &nbsp;|&nbsp; 📧 hackfusion@avcinstitute.edu
+                    </p>
+                </section>
+            );
+        }
+
+        // ── Footer ──
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <p>
+                        © 2026 <strong>AVC HackFusion 2.0</strong> — Organized by <strong>AVC Institute</strong>. All rights reserved.
+                    </p>
+                    <p style={{ marginTop: '4px' }}>
+                        Built with ❤️ for the student community. | No AI was used to build this hackathon website 😉
+                    </p>
+                </footer>
+            );
+        }
+
+        // ── Main App ──
+        function App() {
+            return (
+                <div className="app">
+                    <Navbar />
+                    <Hero />
+                    <About />
+                    <Rules />
+                    <Prizes />
+                    <Timeline />
+                    <CTA />
+                    <Footer />
+                </div>
+            );
+        }
+
+        // ── Render ──
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<App />);
+        }
+    </script>
+</body>
+</html>
